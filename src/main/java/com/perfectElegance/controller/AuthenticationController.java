@@ -37,7 +37,6 @@ public class AuthenticationController {
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest request) {
         try {
             AuthenticationResponse response = authenticationService.register(request);
-            System.out.println("hi");
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (EmailAlreadyExistsException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
