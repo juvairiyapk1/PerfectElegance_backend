@@ -1,5 +1,6 @@
 package com.perfectElegance.controller;
 
+import com.perfectElegance.Dto.UserDto;
 import com.perfectElegance.modal.User;
 import com.perfectElegance.service.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,8 @@ public class HomeController {
     private HomeService homeService;
 
     @GetMapping("/OtherUsers")
-    public List<User> getAllUsersExceptAdminAndLoggedInUser(){
+
+    public List<UserDto> getAllUsersExceptAdminAndLoggedInUser(){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails  = (UserDetails)authentication.getPrincipal();

@@ -20,7 +20,7 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     @Query("Update User u set u.password = ?2 where u.email = ?1")
     void updatePassword(String email,String password);
 
-  @Query("SELECT u FROM User u WHERE u.id <> :loggedInUserId AND u.role <> 'ADMIN' AND u.blocked = true")
+  @Query("SELECT u FROM User u WHERE u.id <> :loggedInUserId AND u.role <> 'ADMIN' AND u.blocked = false")
   List<User> findAllExceptAdminAndLoggedInUserAndBlocked(@Param("loggedInUserId") Integer loggedInUserId);
 
 

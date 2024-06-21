@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -25,8 +26,9 @@ public class User implements UserDetails {
     private Long phoneNumber;
     private String gender;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy")
-    private String DOB;
+
+    @Temporal(TemporalType.DATE)
+    private Date DOB;
 
     private String relegion;
     private String nationality;
