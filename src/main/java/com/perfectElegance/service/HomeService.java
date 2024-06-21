@@ -1,5 +1,6 @@
 package com.perfectElegance.service;
 
+import com.perfectElegance.Dto.HomeDto;
 import com.perfectElegance.Dto.UserDto;
 import com.perfectElegance.modal.User;
 import com.perfectElegance.repository.UserRepository;
@@ -22,18 +23,19 @@ public class HomeService {
         return user != null ? user.getId() : null;
 
     }
-    public List<UserDto> findAllExceptAdminAndLoggedInUser(Integer loggedInUserId){
+    public List<HomeDto> findAllExceptAdminAndLoggedInUser(Integer loggedInUserId){
         List<User> users= userRepository.findAllExceptAdminAndLoggedInUserAndBlocked(loggedInUserId);
 
         return users.stream()
                 .map(user -> {
-                    UserDto userDto = new UserDto();
-                    userDto.setName(user.getName());
-                    userDto.setDOB(user.getDOB());
-                    userDto.setHomeLocation(user.getHomeLocation());
-                    userDto.setEducation(user.getEducation());
-                    userDto.setProfession(user.getProfession());
-                    return userDto;
+                    HomeDto homeDto = new HomeDto();
+                    homeDto.setName(user.getName());
+                    homeDto.setDOB(user.getDOB());
+                    homeDto.setRelegion(user.getRelegion());
+                    homeDto.setHomeLocation(user.getHomeLocation());
+                    homeDto.setEducation(user.getEducation());
+                    homeDto.setProfession(user.getProfession());
+                    return homeDto;
                 })
                 .collect(Collectors.toList());
     }
