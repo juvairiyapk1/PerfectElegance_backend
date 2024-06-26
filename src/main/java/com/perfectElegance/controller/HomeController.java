@@ -25,8 +25,9 @@ public class HomeController {
         String loggedInEmail = userDetails.getUsername();
 
         Integer loggedInUserId = homeService.getUserIdByEmail(loggedInEmail);
+        String loggedInUserGender = homeService.getUserGenderByEmail(loggedInEmail);
 
-        return homeService.findAllExceptAdminAndLoggedInUser(loggedInUserId);
+        return homeService.findAllExceptAdminAndLoggedInUser(loggedInUserId,loggedInUserGender);
     }
 
 }

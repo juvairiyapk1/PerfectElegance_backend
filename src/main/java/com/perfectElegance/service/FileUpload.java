@@ -6,5 +6,5 @@ import java.io.IOException;
 import java.util.Map;
 
 public interface FileUpload {
-    Map upload(MultipartFile multipartFile, String folder);
+//    Map upload(MultipartFile multipartFile)throws IOException;
 }

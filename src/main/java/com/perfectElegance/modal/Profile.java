@@ -1,7 +1,9 @@
 package com.perfectElegance.modal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -27,11 +29,16 @@ public class Profile {
     private Integer NoOfMarriedSis;
     private String image;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @ToString.Exclude
+    @JsonIgnore
     private User user;
 
-    @OneToOne
-    private Profile profile;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "partner_id")
+    private Partner partner;
 
     @OneToOne
     private Subscription subscription;

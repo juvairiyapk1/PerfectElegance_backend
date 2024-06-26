@@ -23,8 +23,8 @@ public class HomeService {
         return user != null ? user.getId() : null;
 
     }
-    public List<HomeDto> findAllExceptAdminAndLoggedInUser(Integer loggedInUserId){
-        List<User> users= userRepository.findAllExceptAdminAndLoggedInUserAndBlocked(loggedInUserId);
+    public List<HomeDto> findAllExceptAdminAndLoggedInUser(Integer loggedInUserId,String gender){
+        List<User> users= userRepository.findAllExceptAdminAndLoggedInUserAndBlocked(loggedInUserId,gender);
 
         return users.stream()
                 .map(user -> {
@@ -39,4 +39,11 @@ public class HomeService {
                 })
                 .collect(Collectors.toList());
     }
+
+    public String getUserGenderByEmail(String loggedInEmail) {
+        User user=userRepository.findByEmail(loggedInEmail).get();
+        return user.getGender();
+    }
+
+
 }

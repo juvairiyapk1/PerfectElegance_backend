@@ -1,13 +1,12 @@
 package com.perfectElegance.modal;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -63,6 +62,11 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user" ,cascade = CascadeType.ALL , orphanRemoval = true)
     private Set<Subscription>subscriptions;
 
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @JsonIgnore
+    private Profile profile;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
@@ -92,4 +96,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

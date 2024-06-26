@@ -19,7 +19,10 @@ public class Partner {
     private String languagesSpoken;
     private String religion;
 
-    @OneToOne
+
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
 
