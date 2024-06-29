@@ -19,14 +19,11 @@ public class Profile {
     private String bloodGroup;
     private String familyType;
     private String homeType;
+    private String physicalStatus;
     private String livingSituation;
-    private String fatherDetails;
-    private String motherDetails;
-    private Integer NoOfElderBro;
-    private Integer NoOfElderSis;
-    private Integer NoOfYoungerSis;
-    private Integer NoOfYoungerBro;
-    private Integer NoOfMarriedSis;
+    private String marriagePlans;
+    private String hairColor;
+    private String hairType;
     private String image;
 
     @OneToOne(fetch = FetchType.LAZY)

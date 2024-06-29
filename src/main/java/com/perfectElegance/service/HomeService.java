@@ -35,7 +35,9 @@ public class HomeService {
                     homeDto.setHomeLocation(user.getHomeLocation());
                     homeDto.setEducation(user.getEducation());
                     homeDto.setProfession(user.getProfession());
-                    return homeDto;
+                    if (user.getProfile() != null) {
+                        homeDto.setImage(user.getProfile().getImage());
+                    }                    return homeDto;
                 })
                 .collect(Collectors.toList());
     }

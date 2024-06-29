@@ -13,5 +13,6 @@ public class HomeDto {
     private String education;
     private String profession;
     private String homeLocation;
+    private String image;
 
 }

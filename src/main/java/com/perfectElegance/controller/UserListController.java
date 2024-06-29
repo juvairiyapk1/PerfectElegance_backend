@@ -27,18 +27,6 @@ public class UserListController {
         return ResponseEntity.ok(users);
     }
 
-//    @PutMapping("/editUser/{id}")
-//    public ResponseEntity<String>editUser(@PathVariable Integer id, @RequestBody User user){
-//        System.out.println(id+"hihi");
-//        System.out.println(user);
-//        User updatedUser=userListService.updateUser(id,user);
-//        if (updatedUser != null){
-//            return ResponseEntity.ok("User updated successfully!");
-//        }else{
-//            return ResponseEntity.ok("User updated failed");
-//        }
-//    }
-
     @PostMapping("/{id}/block")
     public ResponseEntity<Map<String,String>> blockUser(@PathVariable Integer id) {
         userListService.blockUser(id);

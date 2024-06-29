@@ -35,16 +35,7 @@ public class UserListService {
                 .collect(Collectors.toList());
     }
 
-//    public User updateUser(Integer id, User user) {
-//        System.out.println(user+"hello");
-//        User existingUser=userRepository.findById(id).get();
-//        existingUser.setName(user.getName());
-//        existingUser.setPhoneNumber(user.getPhoneNumber());
-//        existingUser.setEmail(user.getEmail());
-//        existingUser.setRole(user.getRole());
-//        existingUser.setGender(user.getGender());
-//        return userRepository.save(existingUser);
-//    }
+
 
     public void blockUser(Integer id) {
         Optional<User> userOptional = userRepository.findById(id);

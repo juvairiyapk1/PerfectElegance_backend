@@ -30,4 +30,29 @@ public class UserDetailsServiceIMPL implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getAuthorities());
     }
 
+        public User updateUser(Integer id, User user) {
+        System.out.println(user+"hello");
+        User existingUser=userRepository.findById(id).get();
+        existingUser.setName(user.getName());
+        existingUser.setGender(user.getGender());
+        existingUser.setCreateProfileFor(user.getCreateProfileFor());
+        existingUser.setDOB(user.getDOB());
+        existingUser.setMaritalStatus(user.getMaritalStatus());
+        existingUser.setPhysicaleStatus(user.getPhysicaleStatus());
+        existingUser.setEducation(user.getEducation());
+        existingUser.setProfession(user.getProfession());
+        existingUser.setBodyType(user.getEducation());
+        existingUser.setSkinTone(user.getSkinTone());
+        return userRepository.save(existingUser);
+    }
+
+    public User updateLocation(Integer userId, User locationData) {
+        User existingUser = userRepository.findById(userId).get();
+        existingUser.setCurrentLocation(locationData.getCurrentLocation());
+        existingUser.setHomeLocation(locationData.getHomeLocation());
+        existingUser.setResidentialStatus(locationData.getResidentialStatus());
+        existingUser.setEmail(locationData.getEmail());
+        existingUser.setPhoneNumber(locationData.getPhoneNumber());
+        return userRepository.save(existingUser);
+    }
 }

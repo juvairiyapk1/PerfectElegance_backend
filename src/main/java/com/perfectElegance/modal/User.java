@@ -52,6 +52,8 @@ public class User implements UserDetails {
     private String preferredContactType;
     private String contactPersonAndRelationship;
     private String convenientTimeToCall;
+    private String residentialStatus;
+
 
     @Enumerated(value = EnumType.STRING)
     private Role role;

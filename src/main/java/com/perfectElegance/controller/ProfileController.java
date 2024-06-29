@@ -1,10 +1,10 @@
 package com.perfectElegance.controller;
 
+
 import com.perfectElegance.modal.Profile;
 import com.perfectElegance.modal.User;
 import com.perfectElegance.repository.UserRepository;
 import com.perfectElegance.service.*;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +28,68 @@ public class ProfileController {
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final FileUploadImpl fileUpload;
+    private final UserDetailsServiceIMPL userDetailsServiceIMPL;
 
-    @PutMapping("/updateProfile/{id}")
-    public ResponseEntity<String>updateProfile(@PathVariable Integer id, @RequestBody Profile profileDet){
-        profileService.updateProfile(id,profileDet);
-        return ResponseEntity.ok("Profile updated successfully");
+    @PutMapping("/updateProfile/{userId}")
+    public ResponseEntity<Map<String,String>> updateProfile(@PathVariable("userId") Integer userId, @RequestBody Profile profileDet){
+        profileService.updateProfile(userId,profileDet);
+        Map<String,String> response = new HashMap<>();
+        response.put("message","Profile updated successfully");
+        return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/updatePhysicalAttr/{userId}")
+    public ResponseEntity<Map<String,String>>updatePhysicalAttributes(@PathVariable("userId")Integer userId,
+                                                                      @RequestBody Profile physicalData){
+        profileService.updatePhysicalAttributes(userId,physicalData);
+        Map<String,String> response = new HashMap<>();
+        response.put("message","Physical Attributes updated");
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/updateLocationAndContact/{userId}")
+    public ResponseEntity<Map<String,String>>updateLocationAndContact(@PathVariable("userId")Integer userId,
+                                                                      @RequestBody User locationData){
+        User updatedUser = userDetailsServiceIMPL.updateLocation(userId,locationData);
+        Map<String,String> response = new HashMap<>();
+
+        if (updatedUser != null){
+            response.put("message","User updated successfully!");
+            return ResponseEntity.ok(response);
+        }else{
+            response.put("message","User updated failed!");
+
+            return ResponseEntity.ok(response);
+        }
+    }
+
+    @PutMapping("/updateFamilyInfo/{userId}")
+    public ResponseEntity<Map<String,String>>updateFamilyInfo(@PathVariable("userId")Integer userId,
+                                                              @RequestBody Profile familyData){
+        profileService.uapdataFamily(userId,familyData);
+        Map<String,String> response = new HashMap<>();
+        response.put("message","Physical Attributes updated");
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/editUser/{id}")
+    public ResponseEntity<Map<String,String>>editUser(@PathVariable Integer id, @RequestBody User user){
+        System.out.println(id+"hihi");
+        System.out.println(user);
+        User updatedUser=userDetailsServiceIMPL.updateUser(id,user);
+        System.out.println(updatedUser!=null);
+        Map<String, String> response = new HashMap<>();
+
+        if (updatedUser != null){
+            response.put("message","User updated successfully!");
+            return ResponseEntity.ok(response);
+        }else{
+            response.put("message","User updated failed!");
+
+            return ResponseEntity.ok(response);
+        }
+    }
+
 
     @GetMapping("/profile/{userId}")
     public ResponseEntity<User> getUserByUserId(@PathVariable Integer userId) {
@@ -46,6 +102,8 @@ public class ProfileController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
 
 
 
