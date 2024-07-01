@@ -1,6 +1,8 @@
 package com.perfectElegance.controller;
 
 
+import com.perfectElegance.Dto.PartnerDto;
+import com.perfectElegance.modal.Partner;
 import com.perfectElegance.modal.Profile;
 import com.perfectElegance.modal.User;
 import com.perfectElegance.repository.UserRepository;
@@ -8,6 +10,8 @@ import com.perfectElegance.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -165,6 +169,53 @@ public class ProfileController {
         }
     }
 
+    @GetMapping("/getPartnerProfile/{userId}")
+    public ResponseEntity<Partner>getPartnerPreference(@PathVariable("userId")Integer userId){
+        User user = userRepository.findById(userId).orElseThrow(()->
+                new UsernameNotFoundException("User is not fount"));
+        System.out.println("User found: " + user);
+        Partner partner=user.getPartner();
+        System.out.println(partner+"ppppppppppppppppppppppppppp");
+        if(partner != null){
+
+            return ResponseEntity.ok(partner);
+        }else {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
+
+    @PutMapping("/updatePartnerPref/{userId}")
+    public ResponseEntity<Map<String,String>>partnerPreferences(@PathVariable("userId")Integer userId,
+                                                                @RequestBody Partner partnerData){
+        Partner updatedPartner = profileService.updatePartnerPref(userId,partnerData);
+         Map<String,String>response=new HashMap<>();
+
+        if (updatedPartner != null){
+            response.put("message","Partner updated successfully!");
+            return ResponseEntity.ok(response);
+        }else{
+            response.put("message"," updated failed!");
+
+            return ResponseEntity.ok(response);
+        }
+    }
+
+    @PutMapping("/updatePartnerPrefEdu/{userId}")
+    public ResponseEntity<Map<String,String>>partnerPreferEdu(@PathVariable("userId")Integer userId,
+                                                              @RequestBody Partner partnerData){
+        Partner updatedPartner = profileService.updatePartnerEducation(userId,partnerData);
+
+        Map<String,String>response = new HashMap<>();
+
+        if(updatedPartner != null){
+            response.put("message","Partner updated successfully!");
+            return ResponseEntity.ok(response);
+        }else {
+            response.put("message","partner Updating failed");
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 
 

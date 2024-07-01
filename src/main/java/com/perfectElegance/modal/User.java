@@ -64,11 +64,15 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user" ,cascade = CascadeType.ALL , orphanRemoval = true)
     private Set<Subscription>subscriptions;
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @ToString.Exclude
     @JsonIgnore
     private Profile profile;
 
+    @OneToOne(fetch = FetchType.LAZY,mappedBy = "user" ,cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @JsonIgnore
+    private Partner partner;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

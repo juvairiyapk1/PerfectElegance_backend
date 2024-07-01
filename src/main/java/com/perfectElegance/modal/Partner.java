@@ -1,7 +1,9 @@
 package com.perfectElegance.modal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -18,12 +20,24 @@ public class Partner {
     private String complexion;
     private String languagesSpoken;
     private String religion;
+    private String age;
+    private String motherTongue;
+    private String profession;
+    private String country;
+    private String city;
 
 
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id" )
+    @ToString.Exclude
+    @JsonIgnore
     private User user;
+
+    @OneToOne(mappedBy = "partner", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @JsonIgnore
+    private Profile profile;
 
 
 }

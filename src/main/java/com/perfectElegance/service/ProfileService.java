@@ -1,16 +1,19 @@
 package com.perfectElegance.service;
 
-
 import com.perfectElegance.exceptions.EmailAlreadyExistsException;
+import com.perfectElegance.modal.Partner;
 import com.perfectElegance.modal.Profile;
 import com.perfectElegance.modal.User;
+import com.perfectElegance.repository.PartnerRepository;
 import com.perfectElegance.repository.ProfileRepository;
 import com.perfectElegance.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
@@ -18,10 +21,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProfileService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProfileService.class);
+
+
     private final ProfileRepository profileRepository;
 
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
+    private final PartnerRepository partnerRepository;
+
 
     public Profile saveProfile(Profile profile){
         return profileRepository.save(profile);
@@ -124,4 +132,60 @@ public class ProfileService {
         }
 
     }
+
+
+    public Partner updatePartnerPref(Integer userId, Partner partnerData) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with id " + userId));
+        Partner existingPartner = user.getPartner();
+        Profile existinProfile = user.getProfile();
+
+        if(existingPartner == null){
+            Partner newPartner = new Partner();
+            newPartner.setUser(user);
+            partnerData.setUser(user);
+
+            return partnerRepository.save(partnerData);
+        }else {
+            Integer existingPartnerId = existingPartner.getId();
+            existingPartner.setAge(partnerData.getAge());
+            existingPartner.setMaritalStatus(partnerData.getMaritalStatus());
+            existingPartner.setHeight(partnerData.getHeight());
+            existingPartner.setComplexion(partnerData.getComplexion());
+            existingPartner.setPhysicalStatus(partnerData.getPhysicalStatus());
+            existingPartner.setLanguagesSpoken(partnerData.getLanguagesSpoken());
+            existingPartner.setDrinkingHabits(partnerData.isDrinkingHabits());
+            existingPartner.setReligion(partnerData.getReligion());
+            existingPartner.setAppearance(partnerData.getAppearance());
+            existingPartner.setMotherTongue(partnerData.getMotherTongue());
+            existingPartner.setId(existingPartnerId);
+            return partnerRepository.save(existingPartner);
+        }
+
+    }
+
+
+    public Partner updatePartnerEducation(Integer userId,Partner partnerData) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with id " + userId));
+        Partner existingPartner = user.getPartner();
+
+        if (existingPartner == null) {
+            Partner newPartner = new Partner();
+            newPartner.setUser(user);
+            partnerData.setUser(user);
+
+            return partnerRepository.save(partnerData);
+        } else {
+            existingPartner.setEducation(partnerData.getEducation());
+            existingPartner.setProfession(partnerData.getProfession());
+            existingPartner.setCountry(partnerData.getCountry());
+            existingPartner.setCity(partnerData.getCity());
+            return partnerRepository.save(existingPartner);
+        }
+
+    }
+
+
 }

@@ -41,7 +41,7 @@ public class UserDetailsServiceIMPL implements UserDetailsService {
         existingUser.setPhysicaleStatus(user.getPhysicaleStatus());
         existingUser.setEducation(user.getEducation());
         existingUser.setProfession(user.getProfession());
-        existingUser.setBodyType(user.getEducation());
+        existingUser.setBodyType(user.getBodyType());
         existingUser.setSkinTone(user.getSkinTone());
         return userRepository.save(existingUser);
     }
