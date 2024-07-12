@@ -69,7 +69,7 @@ public class HomeService {
         }
 
         return users.stream()
-                .filter(user -> !user.getRelegion().equals(loggedInUserReligion))
+                .filter(user -> user.getRelegion().equals(loggedInUserReligion))
                 .map(user -> {
                     HomeDto homeDto = new HomeDto();
                     homeDto.setName(user.getName());

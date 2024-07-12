@@ -37,8 +37,6 @@ public class Profile {
     @JoinColumn(name = "partner_id")
     private Partner partner;
 
-    @OneToOne
-    private Subscription subscription;
 
 
 }

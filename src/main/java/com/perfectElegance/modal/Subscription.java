@@ -1,11 +1,14 @@
 package com.perfectElegance.modal;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class Subscription {
 
@@ -13,21 +16,26 @@ public class Subscription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
-    private String subscriptionType;
-
-    @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date startDate;
-
-    @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date endDate;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id",nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
+    private LocalDateTime subscriptionStartDate;
 
+    private LocalDateTime subscriptionEndDate;
 
+    private String status;
+
+    private String stripeSubscriptionId;
+
+    @Override
+    public String toString() {
+        return "Subscription{" +
+                "id=" + id +
+                ", subscriptionStartDate=" + subscriptionStartDate +
+                ", subscriptionEndDate=" + subscriptionEndDate +
+                ", status='" + status + '\'' +
+                ", stripeSubscriptionId='" + stripeSubscriptionId + '\'' +
+                '}';
+    }
 }

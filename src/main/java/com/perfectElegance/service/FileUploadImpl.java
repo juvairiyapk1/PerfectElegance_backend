@@ -22,18 +22,6 @@ public class FileUploadImpl implements FileUpload{
     private final Cloudinary cloudinary;
 
 
-//    @Override
-//    public Map upload(MultipartFile file, String folder) {
-//        try {
-//            Map<String, Object> options = ObjectUtils.asMap("folder", folder);
-//            Map<String, Object> data = cloudinary.uploader().upload(file.getBytes(), options);
-//            String imageUrl = (String) data.get("secure_url");
-//            System.out.println("Image Url"+imageUrl);
-//            return data;
-//        } catch (IOException e) {
-//            throw new RuntimeException("Image uploading failed !");
-//        }
-//    }
 
 
     public Map upload(MultipartFile multipartFile) throws IOException {

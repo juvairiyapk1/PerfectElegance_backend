@@ -9,16 +9,16 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class UserDetailsServiceIMPL implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        return userRepository.findByEmail(username)
-//                .orElseThrow(()->new UsernameNotFoundException("User not found"));
-//    }
+
+    @Autowired
+    private JwtService jwtService;
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -54,5 +54,31 @@ public class UserDetailsServiceIMPL implements UserDetailsService {
         existingUser.setEmail(locationData.getEmail());
         existingUser.setPhoneNumber(locationData.getPhoneNumber());
         return userRepository.save(existingUser);
+    }
+
+    public User findUserByHeader(String authHeader) {
+        String jwt = "";
+        String userEmail ="";
+        User user = new User();
+        if(authHeader != null ) {
+            jwt = authHeader.substring(7);
+            userEmail = jwtService.extractUsername(jwt);
+            System.out.println("userEMail from auth =" +userEmail);
+            user = userRepository.findByEmail(userEmail).orElseThrow(()->new UsernameNotFoundException("user not found"));
+            System.out.println("user from auth =" +user);
+            return user;
+        }
+        return user;
+    }
+
+
+    public User findUserById(Integer userId) {
+        Optional<User> optionalUser= userRepository.findById(userId);
+       return optionalUser.get();
+    }
+
+
+    public void saveUser(User user) {
+        userRepository.save(user);
     }
 }

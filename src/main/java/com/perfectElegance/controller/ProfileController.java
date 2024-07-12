@@ -1,7 +1,6 @@
 package com.perfectElegance.controller;
 
 
-import com.perfectElegance.Dto.PartnerDto;
 import com.perfectElegance.modal.Partner;
 import com.perfectElegance.modal.Profile;
 import com.perfectElegance.modal.User;

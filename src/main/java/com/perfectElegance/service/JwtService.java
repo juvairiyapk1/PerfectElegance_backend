@@ -78,6 +78,10 @@ public class JwtService {
     public boolean isTokenBlackListed(String token){
         return blacklistedTokens.contains(token);
     }
+
+
+
+
 }
 
 

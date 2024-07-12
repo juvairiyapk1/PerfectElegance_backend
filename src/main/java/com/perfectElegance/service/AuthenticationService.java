@@ -12,6 +12,8 @@ import com.perfectElegance.utils.LoginResponse;
 import com.perfectElegance.modal.Role;
 import com.perfectElegance.modal.User;
 import com.perfectElegance.repository.UserRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -113,6 +115,7 @@ public class AuthenticationService {
         }
 
         String token = jwtService.generateToken(user);
+//        Cookie cookie = new Cookie("token", token);
         boolean loggedIn = true;
         return new LoginResponse(user.getId(), token, user.getName(), user.getEmail(),
                 user.getPhoneNumber(), user.getGender(),user.getRole(), loggedIn,user.isBlocked());
