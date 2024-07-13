@@ -78,6 +78,7 @@ public class HomeService {
                     homeDto.setHomeLocation(user.getHomeLocation());
                     homeDto.setEducation(user.getEducation());
                     homeDto.setProfession(user.getProfession());
+
                     if (user.getProfile() != null) {
                         homeDto.setImage(user.getProfile().getImage());
                     }

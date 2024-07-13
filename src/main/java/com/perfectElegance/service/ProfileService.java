@@ -38,9 +38,12 @@ public class ProfileService {
     public User getUserByUserId(Integer userId) {
         System.out.println("Finding profile for user ID: " + userId);
         User user = userRepository.findById(userId).get();
+
         System.out.println("Found profile: " + user);
         return user;
     }
+
+
 
 
 

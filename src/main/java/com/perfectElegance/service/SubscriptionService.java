@@ -1,12 +1,13 @@
 package com.perfectElegance.service;
 
 import com.perfectElegance.modal.Subscription;
-import com.perfectElegance.modal.User;
 import com.perfectElegance.repository.SubscriptionRepository;
-import com.stripe.model.checkout.Session;
+import com.perfectElegance.Dto.SubscriptionDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SubscriptionService {
@@ -15,10 +16,22 @@ public class SubscriptionService {
     private SubscriptionRepository subscriptionRepository;
 
 
+    public List<SubscriptionDto> getSubscribers() {
+        System.out.println("hi inside the service");
+        List<Subscription> subscriptions=subscriptionRepository.findAll();
+        List<SubscriptionDto> subscriptionDtos=subscriptions.stream()
+                        .map(subscription -> {
+                            SubscriptionDto dto = new SubscriptionDto();
+                            dto.setUser(subscription.getUser().getEmail());
+                            dto.setSubscriptionStartDate(subscription.getSubscriptionStartDate());
+                            dto.setSubscriptionEndDate(subscription.getSubscriptionEndDate());
+                            dto.setStatus(subscription.getStatus());
+                             return dto;
+                        })
+                .collect(Collectors.toList());
+        System.out.println(subscriptionDtos);
 
-//    public void deleteSubscriptionBySubscriptionId(String subscriptionId) {
-//        subscriptionRepository.deleteBySubscriptionId(subscriptionId); // Assuming you have this method
-//    }
+        return subscriptionDtos;
 
-
+    }
 }

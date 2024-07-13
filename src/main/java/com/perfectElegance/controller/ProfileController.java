@@ -1,12 +1,15 @@
 package com.perfectElegance.controller;
 
 
+import com.perfectElegance.Dto.UserProfileDto;
 import com.perfectElegance.modal.Partner;
 import com.perfectElegance.modal.Profile;
 import com.perfectElegance.modal.User;
 import com.perfectElegance.repository.UserRepository;
 import com.perfectElegance.service.*;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.method.P;
@@ -32,6 +35,8 @@ public class ProfileController {
     private final JwtService jwtService;
     private final FileUploadImpl fileUpload;
     private final UserDetailsServiceIMPL userDetailsServiceIMPL;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PutMapping("/updateProfile/{userId}")
     public ResponseEntity<Map<String,String>> updateProfile(@PathVariable("userId") Integer userId, @RequestBody Profile profileDet){
@@ -95,17 +100,23 @@ public class ProfileController {
 
 
     @GetMapping("/profile/{userId}")
-    public ResponseEntity<User> getUserByUserId(@PathVariable Integer userId) {
-        System.out.println("inside profile");
-        User profile = profileService.getUserByUserId(userId);
-        System.out.println(profile);
-        if (profile != null) {
-            return ResponseEntity.ok(profile);
-        } else {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> getUserByUserId(@PathVariable Integer userId) {
+        try {
+            User user = profileService.getUserByUserId(userId);
+            if (user != null) {
+                UserProfileDto profileDTO = modelMapper.map(user, UserProfileDto.class);
+                return ResponseEntity.ok(profileDTO);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "error");
+            response.put("message", "An error occurred while fetching the user profile");
+            response.put("details", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-
 
 
 
