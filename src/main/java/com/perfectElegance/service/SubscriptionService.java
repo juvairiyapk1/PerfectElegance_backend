@@ -25,9 +25,11 @@ public class SubscriptionService {
                             dto.setUser(subscription.getUser().getEmail());
                             dto.setSubscriptionStartDate(subscription.getSubscriptionStartDate());
                             dto.setSubscriptionEndDate(subscription.getSubscriptionEndDate());
+                            dto.setAmount(subscription.getAmount());
                             dto.setStatus(subscription.getStatus());
                              return dto;
                         })
+                .filter(dto -> "ACTIVE".equals(dto.getStatus()))
                 .collect(Collectors.toList());
         System.out.println(subscriptionDtos);
 

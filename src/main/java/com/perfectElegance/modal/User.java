@@ -56,12 +56,20 @@ public class User implements UserDetails {
     private String convenientTimeToCall;
     private String residentialStatus;
 
-
     private boolean isSubscribed = false;
 
     private Integer subscriptionId;
 
     private LocalDateTime subscriptionEndDate;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
 
 
 

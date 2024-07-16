@@ -171,7 +171,7 @@ public class StripeController {
                         .setQuantity(1L)
                         .build())
                 .setClientReferenceId(user.getId().toString())
-                .putMetadata("checkoutId",checkoutId)
+//                .putMetadata("checkoutId",checkoutId)
                 .build();
 
         try {

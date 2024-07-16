@@ -67,6 +67,7 @@ public class StripeService {
         subscription.setStripeSubscriptionId(session.getId());
         subscription.setUser(user);
         subscription.setStatus("PENDING");
+        subscription.setAmount(session.getAmountTotal().doubleValue()/100);
         subscriptionRepository.save(subscription);
         System.out.println("Created subscription with user details successfully");
     }
@@ -75,7 +76,7 @@ public class StripeService {
 
         try{
 
-            com.perfectElegance.modal.Subscription subscription = subscriptionRepository.findByStripeSubscriptionId(stripeId);
+            Subscription subscription= subscriptionRepository.findByStripeSubscriptionId(stripeId);
             if(subscription == null && subscription.getUser() == null){
                 throw new UsernameNotFoundException("user not found");
             }
@@ -86,6 +87,7 @@ public class StripeService {
             subscriptionRepository.save(subscription);
 
             User user = subscription.getUser();
+            System.out.println(user+"inside subscription");
             user.setSubscriptionEndDate(subscription.getSubscriptionEndDate());
             user.setSubscriptionId(subscription.getId());
             user.setSubscribed(true);

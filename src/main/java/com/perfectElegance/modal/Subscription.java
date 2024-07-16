@@ -28,6 +28,8 @@ public class Subscription {
 
     private String stripeSubscriptionId;
 
+    private Double amount;
+
     @Override
     public String toString() {
         return "Subscription{" +

@@ -16,6 +16,7 @@ public class SubscriptionDto {
     private String user;
     private LocalDateTime subscriptionStartDate;
     private LocalDateTime subscriptionEndDate;
+    private Double amount;
     private String status;
 
 

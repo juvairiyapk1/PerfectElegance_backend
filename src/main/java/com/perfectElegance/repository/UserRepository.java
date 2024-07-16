@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,5 +26,15 @@ public interface UserRepository extends JpaRepository<User,Integer> {
   List<User> findAllExceptAdminAndLoggedInUserAndBlocked(@Param("loggedInUserId") Integer loggedInUserId, @Param("gender") String gender, Pageable pageable);
 
 
+  long countByBlocked(boolean blocked);
+
+
+  Long countByIsSubscribed(boolean isSubscribed);
+
+  @Query("SELECT COUNT(u) FROM User u WHERE u.subscriptionEndDate IS NOT NULL AND u.subscriptionEndDate > :start AND u.subscriptionEndDate <= :end")
+  long countActiveSubscriptionsBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+
+  long countByCreatedAtBetween(LocalDateTime startOfMonth, LocalDateTime endOfMonth);
 
 }

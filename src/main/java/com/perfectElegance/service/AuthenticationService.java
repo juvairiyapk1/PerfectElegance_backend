@@ -115,7 +115,6 @@ public class AuthenticationService {
         }
 
         String token = jwtService.generateToken(user);
-//        Cookie cookie = new Cookie("token", token);
         boolean loggedIn = true;
         return new LoginResponse(user.getId(), token, user.getName(), user.getEmail(),
                 user.getPhoneNumber(), user.getGender(),user.getRole(), loggedIn,user.isBlocked());
