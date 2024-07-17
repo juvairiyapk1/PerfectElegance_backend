@@ -9,21 +9,15 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.*;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.*;
-import com.stripe.param.checkout.SessionCreateParams;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
-import java.util.Map;
 
 
 @Service
@@ -91,7 +85,11 @@ public class StripeService {
             user.setSubscriptionEndDate(subscription.getSubscriptionEndDate());
             user.setSubscriptionId(subscription.getId());
             user.setSubscribed(true);
-            userRepository.save(user);
+            User savedUser = userRepository.save(user);
+            System.out.println("User after save: " + savedUser);
+
+            User fetchedUser = userRepository.findById(savedUser.getId()).orElse(null);
+            System.out.println("User fetched from database: " + fetchedUser);
 
         }catch (UsernameNotFoundException e) {
             throw new UsernameNotFoundException("user not found");

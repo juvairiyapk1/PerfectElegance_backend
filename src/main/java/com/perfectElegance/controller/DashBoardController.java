@@ -3,7 +3,6 @@ package com.perfectElegance.controller;
 import com.perfectElegance.Dto.MonthlyRevenueDto;
 import com.perfectElegance.Dto.MonthlyUserSubscriptionDTO;
 import com.perfectElegance.service.DashBoardService;
-import com.perfectElegance.service.UserListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

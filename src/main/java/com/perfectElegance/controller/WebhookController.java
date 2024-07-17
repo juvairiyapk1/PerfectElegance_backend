@@ -54,56 +54,6 @@ public class WebhookController {
 
 
 
-//    @PostMapping("/webhook")
-//    public ResponseEntity<String> handle(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        String payload = request.getReader().lines().reduce("", (accumulator, actual) -> accumulator + actual);
-//        String sigHeader = request.getHeader("Stripe-Signature");
-//        Event event;
-//
-//        try {
-//            event = Webhook.constructEvent(payload, sigHeader, "whsec_d672024609e675ea591446403df3ff62b0a411ea9125144978cc4f70569d03af");
-//        } catch (SignatureVerificationException e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid signature");
-//        }
-//
-//        EventDataObjectDeserializer dataObjectDeserializer = event.getDataObjectDeserializer();
-//        StripeObject stripeObject = null;
-//        if (dataObjectDeserializer.getObject().isPresent()) {
-//            stripeObject = dataObjectDeserializer.getObject().get();
-//        } else {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Deserialization failed");
-//        }
-//
-//        switch (event.getType()) {
-//            case "checkout.session.completed":
-//                com.stripe.model.Subscription subscription = (com.stripe.model.Subscription) stripeObject;
-//                handleSubscriptionCreated((Map<String, Object>) subscription);
-//                break;
-//            case "checkout.session.canceled":
-//                subscription = (com.stripe.model.Subscription) stripeObject;
-////                handleSubscriptionCanceled(subscription);
-//                break;
-//
-//            default:
-//                System.out.println("Unhandled event type: " + event.getType());
-//        }
-//
-//        return ResponseEntity.ok("Webhook processed successfully");
-//    }
-
-//    private void handleSubscriptionCanceled(StripeObject stripeObject) {
-//        com.stripe.model.checkout.Session session = (com.stripe.model.checkout.Session) stripeObject;
-//        String subscriptionId = session.getSubscription();
-//
-//        Optional<Subscription> optionalSubscription = subscriptionRepository.findBySubscriptionId(subscriptionId);
-//        if (optionalSubscription.isPresent()) {
-//            Subscription subscription = optionalSubscription.get();
-//            subscription.setStatus("canceled");
-//            subscriptionRepository.save(subscription);
-//        } else {
-//            throw new RuntimeException("Subscription not found for ID: " + subscriptionId);
-//        }
-//    }
 
     private void handleSubscriptionCreated(Map<String, Object> sessionData) {
         String subscriptionId = (String) sessionData.get("subscription");

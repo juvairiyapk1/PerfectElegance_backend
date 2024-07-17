@@ -46,104 +46,7 @@ public class StripeController {
     private UserDetailsServiceIMPL userService;
 
 
-//    @PostMapping("/createCustomer")
-//    public CustomerData index(@RequestBody CustomerData data)throws StripeException{
-//        Stripe.apiKey=secretKey;
-//        CustomerCreateParams params =
-//                CustomerCreateParams.builder()
-//                        .setName(data.getName())
-//                        .setEmail(data.getEmail())
-//                        .build();
-//        Customer customer = Customer.create(params);
-//        data.setCustomerId(customer.getId());
-//        return data;
-//    }
 
-//    @PostMapping("/customerSubscription")
-//    @ResponseBody
-//    public StripeSubscriptionResponse subscription(@RequestBody StripeSubscriptionDto stripeSubscriptionDto){
-//        return stripeService.createSubscription(stripeSubscriptionDto);
-//    }
-
-//    @PostMapping("/session/payment")
-//    @ResponseBody
-//    public SessionDto sessionPayment(@RequestBody SessionDto sessionDto){
-//        System.out.println("jiiiiii");
-//        System.out.println(sessionDto+"sessionDto");
-//        return stripeService.createSessionPayment(sessionDto);
-//    }
-
-//    @DeleteMapping("/cancelSubscription/{id}")
-//    @ResponseBody
-//    public SubscriptionCancelRecord cancelSubscription(@PathVariable String id) throws StripeException {
-////        Subscription subscription = stripeService.cancelSubscription(id);
-//        if(nonNull(subscription)){
-//         return new SubscriptionCancelRecord(subscription.getStatus());
-//        }
-//        return null;
-//    }
-
-
-//    @PostMapping("/checkout-session")
-//    public ResponseEntity<Map<String, String>> createCheckoutSession(@RequestHeader("") @RequestBody Map<String, String> payload) {
-//        String priceId = payload.get("priceId");
-//        String successUrl = payload.get("successUrl");
-//        String cancelUrl = payload.get("cancelUrl");
-//        String userId = payload.get("userId");
-//
-//        System.out.println("Price ID: " + priceId);
-//        System.out.println("Success URL: " + successUrl);
-//        System.out.println("Cancel URL: " + cancelUrl);
-//        System.out.println("User ID: " + userId);
-//
-//        try {
-//            SessionCreateParams params = SessionCreateParams.builder()
-//                    .setSuccessUrl(successUrl)
-//                    .setCancelUrl(cancelUrl)
-//                    .addLineItem(
-//                            SessionCreateParams.LineItem.builder()
-//                                    .setPrice(priceId)
-//                                    .setQuantity(1L)
-//                                    .build()
-//                    )
-//                    .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
-//                    .putMetadata("userId", userId)
-//                    .build();
-//
-//            Session session = Session.create(params);
-//
-//            Map<String, String> responseData = new HashMap<>();
-//            responseData.put("sessionId", session.getId());
-//            responseData.put("userId", userId);
-//
-//            return ResponseEntity.ok(responseData);
-//        } catch (StripeException e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Error creating checkout session"));
-//        }
-//    }
-
-
-//    @PostMapping("/checkout-session")
-//    public ResponseEntity<String> createSubscriptionIntent(@RequestHeader("Authorization") String header, @RequestBody Map<String, String> body) {
-//        String priceId = body.get("priceId");
-//        return ResponseEntity.ok(stripeService.checkout(header, priceId));
-//    }
-
-//    @PostMapping("/checkout-session")
-//    public ResponseEntity<Map<String, String>> createSubscriptionIntent(@RequestHeader("Authorization") String header, @RequestBody Map<String, String> body) {
-//        String priceId = body.get("priceId");
-//        String sessionId;
-//        try {
-//            sessionId = stripeService.checkout(header, priceId);
-//            Map<String, String> response = new HashMap<>();
-//            response.put("sessionId", sessionId);
-//            return ResponseEntity.ok(response);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-//        }
-//    }
 
     @PostMapping("/create-checkout-session")
     public ResponseEntity<?> checkout(@RequestHeader("Authorization") String header,@RequestBody Map<String, String> requestBody) {
@@ -164,7 +67,7 @@ public class StripeController {
 
         SessionCreateParams params = SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
-                .setSuccessUrl("http://localhost:4200/user/success?token=" + token )
+                .setSuccessUrl("http://localhost:4200/user/success?token=" + token)
                 .setCancelUrl("http://localhost:4200/user/cancel?token=" + token )
                 .addLineItem(SessionCreateParams.LineItem.builder()
                         .setPrice(priceId)

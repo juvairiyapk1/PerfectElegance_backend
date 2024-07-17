@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Data
 public class HomeDto {
-
+    private Integer id;
     private String name;
     private Date DOB;
     private String relegion;

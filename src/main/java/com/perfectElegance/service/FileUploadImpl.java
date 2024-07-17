@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class FileUploadImpl implements FileUpload{
+public class FileUploadImpl {
 
     private final Cloudinary cloudinary;
 
