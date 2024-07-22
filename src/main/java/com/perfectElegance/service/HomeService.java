@@ -63,6 +63,7 @@ public class HomeService {
 
         return users.stream()
                 .filter(user -> user.getRelegion().equals(loggedInUserReligion))
+                .filter(user -> !user.isHidden())
                 .map(user -> {
                     HomeDto homeDto = new HomeDto();
                     homeDto.setId(user.getId());

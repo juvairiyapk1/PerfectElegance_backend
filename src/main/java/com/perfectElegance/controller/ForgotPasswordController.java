@@ -9,6 +9,7 @@ import com.perfectElegance.repository.UserRepository;
 import com.perfectElegance.service.EmailService;
 import com.perfectElegance.service.OTPService;
 import com.perfectElegance.utils.ChangePassword;
+import com.perfectElegance.utils.EditPassword;
 import com.perfectElegance.utils.ResendOtpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -95,6 +96,45 @@ public class ForgotPasswordController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/editPassword")
+    public ResponseEntity<Map<String, String>> editPasswordHandle(@RequestBody EditPassword editPassword) {
+
+        System.out.println("inside edit password");
+        String email = editPassword.email();
+        String currentPassword = editPassword.currentPassword();
+        String newPassword = editPassword.newPassword();
+        String repeatPassword = editPassword.repeatPassword();
+
+        Map<String, String> response = new HashMap<>();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Check if current password is correct
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            response.put("message", "Current password is incorrect");
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        }
+
+        // Check if new password and repeat password match
+        if (!Objects.equals(newPassword, repeatPassword)) {
+            response.put("message", "New password and repeat password do not match");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Check if new password is different from current password
+        if (passwordEncoder.matches(newPassword, user.getPassword())) {
+            response.put("message", "New password must be different from current password");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Encode and update the new password
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        userRepository.updatePassword(email, encodedPassword);
+
+        response.put("message", "Password has been changed successfully");
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping("/verify_otp")
     public ResponseEntity<Map<String, String>> verifyOtp(@RequestBody Map<String, String> request) {

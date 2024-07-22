@@ -81,4 +81,10 @@ public class UserDetailsServiceIMPL implements UserDetailsService {
     public void saveUser(User user) {
         userRepository.save(user);
     }
+
+    public boolean isUserSubscribed(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(()->new RuntimeException("user is not found"));
+        return user.isSubscribed();
+    }
 }

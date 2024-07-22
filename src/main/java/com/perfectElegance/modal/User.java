@@ -62,6 +62,8 @@ public class User implements UserDetails {
 
     private LocalDateTime subscriptionEndDate;
 
+    private boolean isHidden = false;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

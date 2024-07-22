@@ -25,6 +25,7 @@ public class Partner {
     private String profession;
     private String country;
     private String city;
+//    private Double matchScore;
 
 
 
