@@ -90,30 +90,5 @@ public class StripeController {
         }
     }
 
-    @GetMapping("/stripe-success")
-    public void stripeSuccess(@RequestParam("session_id") String sessionId, @RequestParam("user_id") Integer userId, HttpServletResponse response) throws IOException {
-        // Verify the session with Stripe
-        try {
-            Session session = Session.retrieve(sessionId);
-            if (session.getPaymentStatus().equals("paid")) {
-                // Update user's subscription status
-                User user = userService.findUserById(userId);
-//                user.setSubscriptionId(session.getSubscription());
-                userService.saveUser(user);
-
-                // Generate a new JWT
-                String jwt = jwtService.generateToken(user);
-
-                // Redirect to the frontend success page with the new JWT
-                response.sendRedirect("http://localhost:4200/user/success?token=" + jwt);
-            } else {
-                response.sendRedirect("http://localhost:4200/user/payment-failed");
-            }
-        } catch (StripeException e) {
-            e.printStackTrace();
-            response.sendRedirect("http://localhost:4200/user/payment-failed");
-        }
-    }
-
 
 }

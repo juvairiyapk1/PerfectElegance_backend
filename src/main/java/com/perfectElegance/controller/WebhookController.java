@@ -52,37 +52,6 @@ public class WebhookController {
     @Autowired
     private StripeService stripeService;
 
-
-
-
-    private void handleSubscriptionCreated(Map<String, Object> sessionData) {
-        String subscriptionId = (String) sessionData.get("subscription");
-        String customerId = (String) sessionData.get("customer");
-        System.out.println(customerId+"customerID");
-
-        Map<String, String> metadata = (Map<String, String>) sessionData.get("metadata");
-        String userId = metadata.get("userId");
-
-        if (userId == null) {
-            throw new RuntimeException("User ID not found in session metadata");
-        }
-
-        // Find the user by ID
-        User user = userRepository.findById(Integer.valueOf(userId))
-                .orElseThrow(() -> new RuntimeException("User not found for ID: " + userId));
-
-
-        Subscription subscription = new Subscription();
-        subscription.setStripeSubscriptionId(subscriptionId);
-        subscription.setUser(user);
-        subscription.setStatus("active");
-
-        subscriptionRepository.save(subscription);
-
-    }
-
-
-
     @PostMapping("/webhook")
     public ResponseEntity<String> handleWebhook(@RequestBody String payload, HttpServletRequest request) throws JsonProcessingException {
         System.out.println("Webhook endpoint hit");
