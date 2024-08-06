@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -87,4 +88,16 @@ public class UserDetailsServiceIMPL implements UserDetailsService {
                 .orElseThrow(()->new RuntimeException("user is not found"));
         return user.isSubscribed();
     }
+
+    public void disconnectUser(User user){
+
+    }
+
+    public List<User> findConnectedUsers(){
+
+        return null;
+    }
+
+
+
 }

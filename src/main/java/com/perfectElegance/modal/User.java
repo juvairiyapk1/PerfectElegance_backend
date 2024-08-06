@@ -64,7 +64,7 @@ public class User implements UserDetails {
 
     private boolean isHidden = false;
 
-    private Status status;
+//    private Status status;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

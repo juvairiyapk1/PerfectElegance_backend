@@ -7,6 +7,7 @@ import com.perfectElegance.modal.Profile;
 import com.perfectElegance.modal.User;
 import com.perfectElegance.repository.UserRepository;
 import com.perfectElegance.service.*;
+import com.perfectElegance.utils.ProfileResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,6 +102,7 @@ public class ProfileController {
 
     @GetMapping("/profile/{userId}")
     public ResponseEntity<?> getUserByUserId(@PathVariable Integer userId) {
+        System.out.println("inside profilr");
         try {
             User user = profileService.getUserByUserId(userId);
             if (user != null) {
@@ -163,7 +165,7 @@ public class ProfileController {
 
 
     @GetMapping("/getProfile/{userId}")
-    public ResponseEntity<Profile> getProfile(@PathVariable Integer userId) {
+    public ResponseEntity<ProfileResponse> getProfile(@PathVariable Integer userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (!optionalUser.isPresent()) {
             return ResponseEntity.notFound().build();
@@ -171,9 +173,11 @@ public class ProfileController {
 
         User user = optionalUser.get();
         Profile profile = user.getProfile();
+        boolean isSubscribed = user.isSubscribed();
 
         if (profile != null) {
-            return ResponseEntity.ok(profile);
+            ProfileResponse profileResponse = new ProfileResponse(profile, isSubscribed);
+            return ResponseEntity.ok(profileResponse);
         } else {
             return ResponseEntity.notFound().build();
         }

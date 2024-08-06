@@ -1,33 +1,21 @@
 package com.perfectElegance.controller;
 
-import com.perfectElegance.Dto.*;
 import com.perfectElegance.modal.User;
-import com.perfectElegance.service.JwtService;
 import com.perfectElegance.service.StripeService;
 import com.perfectElegance.service.UserDetailsServiceIMPL;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
-import com.stripe.model.*;
 import com.stripe.model.checkout.Session;
-import com.stripe.param.CustomerCreateParams;
-import com.stripe.param.PlanListParams;
 import com.stripe.param.checkout.SessionCreateParams;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-import static java.util.Objects.nonNull;
 
 @RestController
 @RequestMapping("/user")
@@ -36,11 +24,13 @@ public class StripeController {
     @Autowired
     private StripeService stripeService;
 
-    @Autowired
-    private JwtService jwtService;
 
-    @Value("${stripe.secretKey}")
+
+
+
+    @Value("${spring.stripe.secret-key}")
     private String secretKey;
+
 
     @Autowired
     private UserDetailsServiceIMPL userService;

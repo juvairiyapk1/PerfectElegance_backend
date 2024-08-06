@@ -32,12 +32,12 @@ public class StripeService {
     @Autowired
     private UserRepository userRepository;
 
-    @Value("${stripe.secretKey}")
+    @Value("${spring.stripe.secret-key}")
     private String secretKey;
 
     @PostConstruct
-    public void  init(){
-        Stripe.apiKey = secretKey;
+    public void init() {
+        Stripe.apiKey=secretKey;
     }
 
 

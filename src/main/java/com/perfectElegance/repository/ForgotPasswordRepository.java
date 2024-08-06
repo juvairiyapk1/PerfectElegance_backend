@@ -4,9 +4,11 @@ import com.perfectElegance.modal.ForgotPassword;
 import com.perfectElegance.modal.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public interface ForgotPasswordRepository extends JpaRepository<ForgotPassword,Integer> {
 
     @Query("select fb from ForgotPassword fb where fb.otp=?1 and fb.user=?2 ")
