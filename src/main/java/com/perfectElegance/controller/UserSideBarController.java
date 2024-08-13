@@ -32,5 +32,14 @@ public class UserSideBarController {
         }});
     }
 
+    @DeleteMapping("/profile")
+    public ResponseEntity<?>profileDeleted(@RequestParam Integer userId,
+                                           @RequestParam String reason,
+                                           @RequestParam(required = false)String details){
+        System.out.println("inside delete");
+      userSideBarService.delete(userId,reason,details);
+      return ResponseEntity.ok().build();
+    }
+
 
 }

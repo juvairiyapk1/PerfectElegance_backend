@@ -10,4 +10,7 @@ import java.util.List;
 public interface ChatMessageRepository extends JpaRepository<ChatMessage,Integer> {
 
     List<ChatMessage> findByChatId(Integer integer);
+
+    void deleteBySenderIdAndRecipientId(Integer senderId, Integer recipientId);
+
 }

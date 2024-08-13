@@ -26,4 +26,11 @@ public class UserSideBarService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return user.isHidden();
     }
+
+    public void delete(Integer userId,String reason,String details) {
+        User user =userRepository.findById(userId)
+                        .orElseThrow(()->new UsernameNotFoundException("User not found"));
+//        logDeletionReason(userId,reason,details);
+        userRepository.delete(user);
+    }
 }

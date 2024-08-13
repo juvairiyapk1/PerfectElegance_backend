@@ -1,10 +1,6 @@
 package com.perfectElegance.modal;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
@@ -23,6 +19,11 @@ public class ChatMessage {
     private Integer senderId;
     private Integer recipientId;
     private String content;
+
+    @Column(name = "`read`", nullable = false)
+    private boolean read = false;
+
     private Date timeStamp;
+
 
 }
