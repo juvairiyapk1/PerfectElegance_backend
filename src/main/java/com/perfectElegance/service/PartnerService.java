@@ -25,6 +25,11 @@ public class PartnerService {
                 .orElseThrow(()->new RuntimeException("user is not found"));
 
         Partner userPreferences = user.getPartner();
+
+        if (userPreferences == null) {
+            return List.of();
+        }
+
         String oppositeGender = user.getGender().equalsIgnoreCase("male") ? "female" : "male";
 
         List<Partner> allPartners =partnerRepository.findAll();
