@@ -172,7 +172,10 @@ public class ProfileController {
         }
 
         User user = optionalUser.get();
+        System.out.println(user+"getprofile");
+
         Profile profile = user.getProfile();
+        System.out.println(profile+"getuserprifile");
         boolean isSubscribed = user.isSubscribed();
 
         if (profile != null) {

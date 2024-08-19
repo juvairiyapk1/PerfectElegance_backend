@@ -46,33 +46,35 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User request) {
-        try {
+
             LoginResponse response = authenticationService.authenticate(request);
             System.out.println(response + " Response");
             return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (UserNotVerifiedException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
-        } catch (InvalidPasswordException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>("An error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Map<String,String>> logout(HttpServletRequest request , Authentication authentication){
-        String token=request.getHeader("Authorization");
-        if (token != null && token.startsWith("Bearer")){
-            token=token.substring(7);
-          authenticationService.logout(token);
+    public ResponseEntity<Map<String,String>> logout(HttpServletRequest request, Authentication authentication) {
+        String token = request.getHeader("Authorization");
+        System.out.println("Received token: " + token);
+
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+            System.out.println("Token after removing 'Bearer ': " + token);
+
+//            authenticationService.logout(token); // Invalidate token and update user status
+        } else {
+            System.out.println("Token is missing or doesn't start with 'Bearer '");
         }
-        Map<String,String>response=new HashMap<>();
-        response.put("message","Logged out successfully");
-        return new ResponseEntity<>(response,HttpStatus.OK);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Logged out successfully");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
-    }
+
+}
 
 
 

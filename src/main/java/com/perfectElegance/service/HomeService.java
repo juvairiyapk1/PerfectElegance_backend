@@ -73,10 +73,12 @@ public class HomeService {
                     homeDto.setHomeLocation(user.getHomeLocation());
                     homeDto.setEducation(user.getEducation());
                     homeDto.setProfession(user.getProfession());
-
+                    homeDto.setOnline(user.isOnline());
                     if (user.getProfile() != null) {
                         homeDto.setImage(user.getProfile().getImage());
                     }
+
+                    System.out.println("HomeDto: " + homeDto);
                     return homeDto;
                 })
                 .collect(Collectors.toList());

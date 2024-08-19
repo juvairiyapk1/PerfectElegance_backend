@@ -1,6 +1,7 @@
 package com.perfectElegance.service;
 
 import com.perfectElegance.Dto.MailBody;
+import com.perfectElegance.exceptions.UserBlockedException;
 import com.perfectElegance.exceptions.UserNotVerifiedException;
 import com.perfectElegance.modal.ForgotPassword;
 import com.perfectElegance.repository.ForgotPasswordRepository;
@@ -18,12 +19,16 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -97,7 +102,24 @@ public class AuthenticationService {
 
 
     public LoginResponse authenticate(User request) {
+
+        // Fetch the user by email before authentication
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() ->
+                new InvalidPasswordException("Invalid email or password"));
+
+        // Check if the user is blocked
+        if (user.isBlocked()) {
+            System.out.println("hey i am working ");
+            throw new UserBlockedException("User account is blocked");
+        }
+
+        // Check if the user is verified
+        if (!user.isVerified()) {
+            throw new UserNotVerifiedException("User is not verified");
+        }
+
         try {
+            // Authenticate the user after the checks
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             request.getEmail(),
@@ -105,22 +127,24 @@ public class AuthenticationService {
                     )
             );
         } catch (AuthenticationException e) {
+            // Handle invalid email or password
             throw new InvalidPasswordException("Invalid email or password");
         }
 
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-
-        if (!user.isVerified()) {
-            throw new UserNotVerifiedException("User is not verified");
-        }
-
+        // Generate the token and update user status
         String token = jwtService.generateToken(user);
         boolean loggedIn = true;
-        return new LoginResponse(user.getId(), token, user.getName(), user.getEmail(),
-                user.getPhoneNumber(), user.getGender(),user.getRole(), loggedIn,user.isBlocked());
+        user.setOnline(true);
+        userRepository.save(user);
+
+        // Return the login response
+        return new LoginResponse(
+                user.getId(), token, user.getName(), user.getEmail(),
+                user.getPhoneNumber(), user.getGender(), user.getRole(), loggedIn, user.isBlocked()
+        );
     }
 
-    public void logout(String token) {
-        jwtService.invalidToken(token);
-    }
+
+
+
 }

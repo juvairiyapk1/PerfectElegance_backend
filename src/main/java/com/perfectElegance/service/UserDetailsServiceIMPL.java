@@ -28,12 +28,16 @@ public class UserDetailsServiceIMPL implements UserDetailsService {
         if (user.isBlocked()) {
             throw new UsernameNotFoundException("User is blocked");
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getAuthorities());
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                user.getAuthorities());
     }
 
         public User updateUser(Integer id, User user) {
         System.out.println(user+"hello");
-        User existingUser=userRepository.findById(id).get();
+        User existingUser=userRepository.findById(id)
+                        .orElseThrow(()-> new RuntimeException("User is not fount"));
         existingUser.setName(user.getName());
         existingUser.setGender(user.getGender());
         existingUser.setCreateProfileFor(user.getCreateProfileFor());

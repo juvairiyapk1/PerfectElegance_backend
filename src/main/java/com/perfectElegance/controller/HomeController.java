@@ -43,7 +43,9 @@ public class HomeController {
         pageRequestDto.setPageNo(pageNo);
         pageRequestDto.setPageSize(pageSize);
 
-       return homeService.findUserByProfession(loggedInUserId, loggedInUserGender, loggedInUserReligion, profession, pageRequestDto.getPageable());
+       return   homeService.findUserByProfession(loggedInUserId, loggedInUserGender, loggedInUserReligion, profession, pageRequestDto.getPageable());
+
+
     }
 
     @GetMapping("profileByUser")

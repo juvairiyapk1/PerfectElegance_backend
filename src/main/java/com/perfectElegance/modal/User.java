@@ -63,6 +63,7 @@ public class User implements UserDetails {
     private LocalDateTime subscriptionEndDate;
 
     private boolean isHidden = false;
+    private boolean isOnline;
 
 //    private Status status;
 
