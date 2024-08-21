@@ -59,11 +59,12 @@ public class ChatController {
 
     @DeleteMapping("/message/{id}")
     public ResponseEntity<Void> deleteSelectedMessage(@PathVariable Integer id) {
-            chatMessageService.deleteMessage(id);
-            simpMessagingTemplate.convertAndSend("/queue/messages/delete", id);
-            return ResponseEntity.noContent().build();
-
+        chatMessageService.deleteMessage(id);
+        simpMessagingTemplate.convertAndSend("/user/{userId}/queue/messages/delete", id);
+        simpMessagingTemplate.convertAndSend("/user/{recipientId}/queue/messages/delete", id);
+        return ResponseEntity.noContent().build();
     }
+
 
     @PostMapping("/{messageId}/read")
     public ResponseEntity<?> markMessageAsRead(@PathVariable("messageId") Integer id) {
